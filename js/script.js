@@ -1,6 +1,7 @@
 var map,
     infowindow,
-    markers = ko.observableArray();
+    markers = ko.observableArray(),
+    view_model;
 // this Model holds locations to be displayed in our map
 var Model = {
 
@@ -94,11 +95,12 @@ function initMap() {
     // Adding mapBounds property to the window object
     window.mapBounds = new google.maps.LatLngBounds();
 
-    createMarkers(Model.locations);
-
     infoWindow = new google.maps.InfoWindow({
       maxWidth: 250
     });
+
+    createMarkers(Model.locations);
+
 
     view_model = new viewModel();
 }
@@ -148,7 +150,11 @@ function createMarkers(locations) {
     // wikimedia information about the place
     getWikiInfo(place, i);
 
-
+    // closeclick event is initialised to make activeIndex null
+    google.maps.event.addListener(infoWindow, 'closeclick', function() {
+      toggleBounce();
+      view_model.activeIndex(null);
+    });
 
     //Extend the map boundry, that the marker is included in visible region
     boundaries.extend(new google.maps.LatLng(place.location.lat, place.location.lng));
