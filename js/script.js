@@ -303,11 +303,33 @@ var viewModel = function() {
       marker.setVisible(false);
     });
 
-    
+
     // It returns the filtered array
     return ko.utils.arrayFilter(self.places(), function(places) {
       return places.title.toLowerCase().indexOf(self.filterText().toLowerCase()) >= 0;
     });
 
   });
+
+  // to open infowindow on click of list elements
+  self.infowindowOnClick = function(place) {
+
+    Model.currentPlace = place;
+
+    //index of current place
+    var index = Model.locations.indexOf(place);
+
+
+    if (self.activeIndex() === null || self.activeIndex() !== index) {
+      self.activeIndex(index);
+      showInfoWindow();
+    } else if (self.activeIndex() === index) {
+      self.activeIndex(null);
+      infoWindow.close();
+    }
+
+    //Toggle The bouncing effect of markers
+    toggleBounce();
+
+  };
   };
