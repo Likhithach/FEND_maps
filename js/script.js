@@ -137,7 +137,7 @@ function createMarkers(locations) {
         (function(place) {
           Model.currentPlace = place;
         })(place);
-        
+
         // invoking showInfoWindow
         toggleBounce();
         showInfoWindow();
@@ -145,6 +145,8 @@ function createMarkers(locations) {
       };
     })(place));
 
+    // wikimedia information about the place
+    getWikiInfo(place, i);
 
 
 
@@ -171,6 +173,11 @@ showInfoWindow = function() {
 
     content = '<div class="info-window">';
   content += '<h4>' + currentPlace.title + '</h4>';
+  if (currentPlace.wiki === null) {
+    content += '<p>Sorry! Unable to load wikipedia information</p>';
+  } else {
+    content += '<p><strong><i>' + currentPlace.wiki + '</i></strong></p>' + '</div>';
+  }
   
 
   //set current place active
@@ -218,6 +225,28 @@ window.addEventListener('resize', function(e) {
   map.fitBounds(mapBounds);
 });
 
+//getting place information from wikipedia
+var getWikiInfo = function(place, i) {
+  var wikiURL = "https://en.wikipedia.org/w/api.php?action=opensearch&search=" + place.title + "&format=json";
+
+  // timeout function runs and alert failed after 8 sec
+  var wikiTimeout = setTimeout(function() {
+    if (i === 0) alert('Unable to Load Information from wikipedia');
+  }, 8000);
+
+  //It set the response to current Model.locations object property wiki
+  $.ajax({
+    url: wikiURL,
+    dataType: "jsonp",
+    success: function(data) {
+      Model.locations[i].wiki = data[2][0];
+
+
+      //we got response from wiki. clear the timeout so that the alert will not open.
+      clearTimeout(wikiTimeout);
+    }
+  });
+};
 
 //knockout view model
 var viewModel = function() {
