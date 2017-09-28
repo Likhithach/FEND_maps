@@ -59,3 +59,57 @@ button.list-group-item:hover {
   text-decoration: none;
   background-color: #aacffd;
 }
+@media screen and (max-width: 680px) {
+  #map {
+    left: 220px;
+    height: 115%;
+  }
+  .search_Box {
+    width: 200px;
+    height: 115%;
+  }
+  .form-control {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  #map {
+    left: 180px;
+    height: 150%;
+  }
+  .search_Box {
+    width: 150px;
+    height: 150%;
+  }
+  .form-control {
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-height: 680px) {
+  #map {
+    height: 120%;
+  }
+  .search_Box {
+    height: 120%;
+  }
+}
+
+@media screen and (max-height: 560px) {
+  #map {
+    height: 160%;
+  }
+  .search_Box {
+    height: 160%
+  }
+}
+
+@media screen and (max-height: 420px) {
+  #map {
+    height: 250%;
+  }
+  .search_Box {
+    height: 250%
+  }
+}
