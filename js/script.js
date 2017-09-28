@@ -1,4 +1,5 @@
 var map,
+    infowindow,
     markers = ko.observableArray();
 // this Model holds locations to be displayed in our map
 var Model = {
@@ -94,6 +95,12 @@ function initMap() {
     window.mapBounds = new google.maps.LatLngBounds();
 
     createMarkers(Model.locations);
+
+    infoWindow = new google.maps.InfoWindow({
+      maxWidth: 250
+    });
+
+    view_model = new viewModel();
 }
 
 // This function creates markers on the map
@@ -130,6 +137,10 @@ function createMarkers(locations) {
         (function(place) {
           Model.currentPlace = place;
         })(place);
+        
+        // invoking showInfoWindow
+        toggleBounce();
+        showInfoWindow();
 
       };
     })(place));
@@ -149,3 +160,71 @@ function createMarkers(locations) {
     markers.push(marker);
   }
 }
+
+// Displays infoWindow
+showInfoWindow = function() {
+
+  var
+    currentPlace = Model.currentPlace,
+
+    index = Model.locations.indexOf(currentPlace),
+
+    content = '<div class="info-window">';
+  content += '<h4>' + currentPlace.title + '</h4>';
+  
+
+  //set current place active
+  view_model.activeIndex(index);
+
+  // setting infowindow content
+  infoWindow.setContent(content);
+
+  //Center the infoWindow on map
+  map.panTo(currentPlace.location);
+
+  //Opens the infowindow on the marker on which we clicked
+  infoWindow.open(map, markers()[index]);
+};
+
+//Adds animation effect on google map markers taken from google map markers animation effects
+var toggleBounce = function() {
+
+  //get index of the current place
+  var index = Model.locations.indexOf(Model.currentPlace);
+
+  //get the marker of the current place
+  var marker = markers()[index];
+
+  //itterate over the markers
+  markers().forEach(function(mark, i) {
+    //if current marker index of itterating loop is
+    //not same as currentPlace index remove animation
+    if (index !== i) mark.setAnimation(null);
+  });
+
+
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+    infoWindow.close();
+    view_model.activeIndex(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+};
+
+
+window.addEventListener('resize', function(e) {
+
+  map.fitBounds(mapBounds);
+});
+
+
+//knockout view model
+var viewModel = function() {
+  var self = this;
+
+
+
+  //it holds the index of active items
+  self.activeIndex = ko.observable(null);
+  };
