@@ -287,7 +287,23 @@ var viewModel = function() {
       if (!obj.visible) obj.setVisible(true);
     });
 
+    // filterLeftPlaces are the places that don't match to the filter
+    var filterLeftPlaces = ko.utils.arrayFilter(self.places(), function(places) {
+      return places.title.toLowerCase().indexOf(self.filterText().toLowerCase()) == -1;
+    });
 
+
+    var index,
+      marker;
+
+    // to make marker visibility false
+    filterLeftPlaces.forEach(function(obj) {
+      index = Model.locations.indexOf(obj);
+      marker = markers()[index];
+      marker.setVisible(false);
+    });
+
+    
     // It returns the filtered array
     return ko.utils.arrayFilter(self.places(), function(places) {
       return places.title.toLowerCase().indexOf(self.filterText().toLowerCase()) >= 0;
