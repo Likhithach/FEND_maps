@@ -1,0 +1,15 @@
+#map {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  height: 100%;
+}
+.container {
+  height: 100%;
+  position: absolute;
+  margin-left: 0px;
+  margin-right: 0px;
+  width: 100%
+}

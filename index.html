@@ -1,9 +1,34 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Vizag</title>
-</head>
+
+ <head>
+   <meta charset="UTF-8">
+   <meta name="description" content="Vizag map">
+   <meta name="keywords" content="HTML,CSS,JavaScript">
+   <meta name="author" content="Likhitha">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Vizag</title>
+   <!-- bootstrap link -->
+   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+   <!-- css link -->
+   <link href="css/styles.css" rel="stylesheet">
+ </head>
 <body>
+ <div class="container">
+   <div id="map"></div>
+ </div>
+ <!-- Jquery -->
+ <script src="js/lib/jquery.min.js"></script>
+
+ <!-- Knockout -->
+ <script src="js/lib/knockout-3.2.0.js"></script>
+
+ <!-- main script file -->
+ <script type="text/javascript" src="js/script.js"></script>
+ <!-- google maps api -->
+ <script async defer
+ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB5mmb1FEz_8PjKcRel7nbVMFJIA5RAzlk&v=3&callback=initMap" onerror="alert('Unable to Load Google Map, Please check your Internet Connection')" ></script>
 
 </body>
+
 </html>
