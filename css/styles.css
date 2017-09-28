@@ -36,3 +36,15 @@ h4 {
   width: 100%;
   padding-left: 15px;
 }
+li {
+  list-style-type: none;
+  padding-top: 5px;
+}
+
+a.list-group-item:hover,
+button.list-group-item:focus,
+button.list-group-item:hover {
+  color: #000000;
+  text-decoration: none;
+  background-color: #aacffd;
+}

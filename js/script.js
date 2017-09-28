@@ -103,6 +103,8 @@ function initMap() {
 
 
     view_model = new viewModel();
+
+    ko.applyBindings(view_model);
 }
 
 // This function creates markers on the map
@@ -258,8 +260,38 @@ var getWikiInfo = function(place, i) {
 var viewModel = function() {
   var self = this;
 
-
+  // it holds all the places information
+  self.places = ko.observableArray(Model.locations);
 
   //it holds the index of active items
   self.activeIndex = ko.observable(null);
+
+  // when user enters an input
+  self.filterText = ko.observable('');
+
+
+  // Filter the list and the markers
+  self.filter = ko.computed(function() {
+
+    // close the info window
+    infoWindow.close();
+
+    // set active class to null to make it invisible
+    self.activeIndex(null);
+
+    /* Itterate over the markers (ko observable) and
+     * and for each object which are not visible or not
+     * bound to map, make visible and bound to the map
+     */
+    markers().forEach(function(obj) {
+      if (!obj.visible) obj.setVisible(true);
+    });
+
+
+    // It returns the filtered array
+    return ko.utils.arrayFilter(self.places(), function(places) {
+      return places.title.toLowerCase().indexOf(self.filterText().toLowerCase()) >= 0;
+    });
+
+  });
   };
