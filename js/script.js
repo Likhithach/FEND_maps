@@ -1,5 +1,5 @@
-var map;
-
+var map,
+    markers = ko.observableArray();
 // this Model holds locations to be displayed in our map
 var Model = {
 
@@ -89,4 +89,63 @@ function initMap() {
         },
         zoom: 13
     });
+
+    // Adding mapBounds property to the window object
+    window.mapBounds = new google.maps.LatLngBounds();
+
+    createMarkers(Model.locations);
+}
+
+// This function creates markers on the map
+function createMarkers(locations) {
+
+  // initlizing variables
+  var place,
+    i,
+    boundaries,
+    lengthOfAllPlaces = locations.length;
+
+  //This loop itterates over the locations and creates marker for every place
+  for (i = 0; i < lengthOfAllPlaces; i++) {
+    //current place
+    place = locations[i];
+
+
+    boundaries = window.mapBounds;
+
+    // It creates new marker and assign to map
+    marker = new google.maps.Marker({
+      position: place.location,
+      animation: google.maps.Animation.DROP,
+      map: map,
+      title: place.title
+    });
+
+
+
+    marker.addListener('click', (function(place) {
+      return function() {
+
+
+        (function(place) {
+          Model.currentPlace = place;
+        })(place);
+
+      };
+    })(place));
+
+
+
+
+    //Extend the map boundry, that the marker is included in visible region
+    boundaries.extend(new google.maps.LatLng(place.location.lat, place.location.lng));
+
+
+    // Fit map to the boundry
+    map.fitBounds(boundaries);
+
+
+    //It Push the marker to the markers array(ko observable)
+    markers.push(marker);
+  }
 }
